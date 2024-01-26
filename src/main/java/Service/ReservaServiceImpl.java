@@ -23,7 +23,6 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     public Reserva fazerReserva(Reserva reserva) {
-
         return reserva;
     }
 
