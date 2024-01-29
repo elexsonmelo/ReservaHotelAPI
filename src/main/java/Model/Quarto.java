@@ -11,8 +11,6 @@ public class Quarto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private int idQuarto;
-    @Column
     private int numero;
     @Column
     private double valor;

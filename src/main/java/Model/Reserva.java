@@ -13,18 +13,18 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private int idReserva;
+    private int numeroReserva;
     @Column
-    private int idQuarto;
+    private int numeroQuarto;
     @Column
-    private int idCliente;
+    private int nomeCliente;
     @Column
-    private double valor;
+    private double valorReserva;
     @Column
     private LocalDate dataEntrada;
     @Column
     private LocalDate dataSaida;
-    }
+}
 
 
 

@@ -2,12 +2,15 @@ package Controller;
 
 import Model.Reserva;
 import Service.ReservaService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/reservas")
 public class ReservaController {
@@ -20,15 +23,17 @@ public class ReservaController {
         return reservaService.consultarDisponibilidade(dataEntrada, dataSaida);
     }
     @PostMapping("/fazer-reserva")
-    public Reserva fazerReserva(@RequestBody Reserva reserva) {
-        return reservaService.fazerReserva(reserva);
+    public ResponseEntity<Reserva> create(@RequestBody Reserva reserva) {
+        Reserva reserva1 = reservaService.save(reserva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(reserva1);
+
     }
 
-    @PutMapping("/alterar-reserva/{reservaId}")
+    @PutMapping("/alterar-reserva/{Id}")
     public Reserva alterarReserva(@PathVariable Long reservaId, @RequestBody Reserva reservaModificada) {
         return reservaService.alterarReserva(reservaId, reservaModificada);
     }
-    @DeleteMapping("/cancelar-reserva/{reservaId}")
+    @DeleteMapping("/cancelar-reserva/{Id}")
     public void cancelarReserva(@PathVariable Long reservaId) {
         reservaService.cancelarReserva(reservaId);
     }
