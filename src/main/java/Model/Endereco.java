@@ -2,11 +2,16 @@ package Model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.io.Serializable;
+@NoArgsConstructor
+@Setter
 @Getter
 @Entity
-@Table(name ="enderecos")
-public class Endereco {
+@Table(name ="endereco_clientes")
+public class Endereco implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,5 +23,8 @@ public class Endereco {
     private String cidade;
     @Column
     private String uf;
+    @JoinColumn
+    @ManyToOne
+    private Cliente cliente;
 }
 

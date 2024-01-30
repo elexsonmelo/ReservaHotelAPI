@@ -13,7 +13,7 @@ import java.util.List;
 public class ReservaServiceImpl implements ReservaService {
 
     @Autowired
-    private ViacepService viacepService;
+    private EnderecoService enderecoService;
 
     private final ReservaRepository reservaRepository;
 

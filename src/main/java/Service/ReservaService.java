@@ -11,7 +11,6 @@ public interface ReservaService {
     List<Reserva> consultarDisponibilidade(LocalDate dataInicio, LocalDate dataFim);
     Reserva alterarReserva(Long reservaId, Reserva reservaModificada);
     void cancelarReserva(Long reservaId);
-
     Reserva save(Reserva reserva);
-
 }
+
