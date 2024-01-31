@@ -27,7 +27,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public Reserva fazerReserva(Reserva reserva) {
+    public Reserva fazerReserva(Reserva reserva){
         return reserva;
     }
 
@@ -43,7 +43,6 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     public Reserva alterarReserva(Long reservaId, Reserva reservaModificada) {
-
         return reservaModificada;
     }
 }
