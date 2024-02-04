@@ -1,11 +1,14 @@
 package Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.UUID;
+@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
@@ -13,8 +16,8 @@ import java.io.Serializable;
 @Table(name ="endereco_clientes")
 public class Endereco implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID enderecoId;
     @Column
     private String numero;
     @Column
@@ -23,8 +26,5 @@ public class Endereco implements Serializable {
     private String cidade;
     @Column
     private String uf;
-    @JoinColumn
-    @ManyToOne
-    private Cliente cliente;
 }
 

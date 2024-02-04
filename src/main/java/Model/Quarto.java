@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.UUID;
+
+@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
@@ -14,14 +17,11 @@ import java.io.Serializable;
 @Table(name = "quartos")
 public class Quarto implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID quartoId;
     @Column
-    private int codigo;
-    @Column
-    private double valor;
-    @JoinColumn
-    @OneToOne
-    private Reserva reserva;
+    private String name;
+    @Column(columnDefinition = "boolean default true")
+    private Boolean estaDisponivel;
 }
 

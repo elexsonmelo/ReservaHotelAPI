@@ -2,7 +2,6 @@ package Controller;
 
 import Model.Reserva;
 import Service.ReservaService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/reservas")
+@RequestMapping("api/reservas")
 public class ReservaController {
 
     @Autowired

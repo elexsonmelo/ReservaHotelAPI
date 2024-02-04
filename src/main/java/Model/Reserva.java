@@ -1,12 +1,16 @@
 package Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.UUID;
+
+@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
@@ -14,14 +18,7 @@ import java.time.LocalDate;
 @Table (name = "reservas")
 public class Reserva implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
-    private int idReserva;
-    @Column
-    private int idQuarto;
-    @Column
-    private String idCliente;
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column
     private double valorReserva;
     @Column
