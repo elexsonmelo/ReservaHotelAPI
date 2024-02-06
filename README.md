@@ -26,7 +26,7 @@
 # Rotas da Aplicação
 
 Para as entidades Room, Garage, Person e Bookings foram feitas as 5 rotas básicas do CRUD:
-- insert
+- create
 - findAll
 - findById
 - update
