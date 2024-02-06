@@ -22,7 +22,7 @@
 - Cada usuário final pode verificar a disponibilidade do quarto, fazer uma reserva, cancelá-la ou modificá-la;
 - Logging de Eventos: Implemente um sistema de logs para registrar eventos importantes na API, como novas reservas, cancelamentos e modificações.
   Isso facilitará a identificação de problemas, a auditoria de atividades e a análise de eventuais falhas;
-- Crie uma documentação básica para a API (SWAGGER AND README), descrevendo os endpoints disponíveis;
+- Crie uma documentação básica para a API (README), descrevendo os endpoints disponíveis;
 
 # Rotas da Aplicação
 
