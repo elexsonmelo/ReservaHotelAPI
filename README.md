@@ -115,5 +115,11 @@ Atualiza as informações do cliente identificado pelo id.
 ### [DELETE] /clientes/:id
 Remove o cliente do sistema, quando esta não possui dependência com outros registros.
 
+# :abacus: Tecnologias Utilizadas
+- SpringBoot, Hibernate, JPA, Maven;
+- Testes unitários e de Integração com JUnit 5 e Mockito;
+
+
+
 
 
