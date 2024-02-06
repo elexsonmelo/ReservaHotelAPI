@@ -25,10 +25,11 @@
 
 # Rotas da Aplicação
 
-Para as entidades Room, Garage, Person e Bookings foram feitas as 5 rotas básicas do CRUD:
+Para as entidades Reserva, Quarto, Cliente e Endereço foram criadas as 5 rotas padrões que compõem um CRUD:
+
 - create
-- findAll
 - findById
+- findAll
 - update
 - delete
 
