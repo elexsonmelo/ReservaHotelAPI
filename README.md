@@ -33,7 +33,7 @@ Para as entidades Reserva, Quarto, Cliente e Endereço foram criadas as 5 rotas 
 - update
 - delete
 
-# Abaixo esta a descrição das rotas
+# Abaixo seguem as descrições das rotas:
 
 ## :bookmark: Reserva
 
@@ -94,7 +94,7 @@ Remove o quarto do sistema, quando este não está disponível para reserva.
 ## :curly_haired_man: Cliente
 
 ### [GET] /clientes
-Busca paginada que retorna todas as pessoas cadastradas no hotel.
+Busca que retorna todas as pessoas cadastradas no hotel.
 ### [POST] /clientes
 Registra uma pessoa no sistema do hotel. 
 
