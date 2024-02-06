@@ -8,7 +8,7 @@
 - Padrão REST para comunicação;
 - Permitir cadastrar um cliente;
 - Permitir criar uma reserva, mediante regras de negócio;
-- Permitir consultar disponibilidade do quarto, e retornar caso esteja disponível;
+- Permitir consultar a disponibilidade do quarto, e retornar uma resposta caso o mesmo esteja disponível;
 - Utilizaremos o Postman para testar, e inserir dados na aplicação.
 
 # Regras de negócio
