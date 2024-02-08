@@ -1,7 +1,7 @@
-package Controller;
+package com.example.reservahotelapi.Controller;
 
-import Dto.EnderecoRequest;
-import Service.EnderecoService;
+import com.example.reservahotelapi.Dto.EnderecoRequest;
+import com.example.reservahotelapi.Service.EnderecoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

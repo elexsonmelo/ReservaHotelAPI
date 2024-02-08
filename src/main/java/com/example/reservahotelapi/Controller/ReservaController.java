@@ -1,9 +1,8 @@
-package Controller;
+package com.example.reservahotelapi.Controller;
 
-import Model.Reserva;
-import Service.ReservaService;
+import com.example.reservahotelapi.Model.Reserva;
+import com.example.reservahotelapi.Service.ReservaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +14,7 @@ import java.util.List;
 @RequestMapping("/api/reservas")
 public class ReservaController {
 
-    @Autowired
-    private ReservaService reservaService;
+    private final ReservaService reservaService;
 
     @GetMapping("/disponibilidade")
     public List<Reserva> consultarDisponibilidade(@RequestParam String dataInicio, @RequestParam String dataFim) {
@@ -29,12 +27,11 @@ public class ReservaController {
         Reserva entity = reservaService.save(reserva);
         return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
-
     @PutMapping("/alterar-reserva/{Id}")
     public Reserva alterarReserva(@PathVariable Long reservaId, @RequestBody Reserva reservaModificada) {
         return reservaService.modificarReserva(reservaId, reservaModificada);
     }
-    @DeleteMapping("/cancelar-reserva/{Id}")
+    @DeleteMapping("/deletar-reserva/{Id}")
     public void cancelarReserva(@PathVariable Long reservaId) {
         reservaService.cancelarReserva(reservaId);
     }

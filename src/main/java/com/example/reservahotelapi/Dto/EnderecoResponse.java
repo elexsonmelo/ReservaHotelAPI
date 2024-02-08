@@ -1,4 +1,4 @@
-package Dto;
+package com.example.reservahotelapi.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,52 +1,38 @@
-package Controller;
+package com.example.reservahotelapi.Controller;
 
-
-import Model.Quarto;
-import Service.QuartoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.reservahotelapi.Model.Quarto;
+import com.example.reservahotelapi.Service.QuartoService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
-
+@RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/quartos")
+@RequestMapping("/api/quartos")
 public class QuartoController {
 
-    @Autowired
-    private QuartoService quartoService;
+    private final QuartoService quartoService;
 
     @PostMapping
     public ResponseEntity<Quarto> create(@RequestBody Quarto quarto) {
-        quarto = quartoService.create(quarto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(quarto.getQuartoId()).toUri();
-        return ResponseEntity.created(uri).body(quarto);
+        Quarto entity = quartoService.salvar(quarto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
-
     @GetMapping
     public ResponseEntity<List<Quarto>> findAll() {
-        List<Quarto> list = quartoService.findAll();
+        List<Quarto> list = quartoService.getQuartoDisponivel();
         return ResponseEntity.ok().body(list);
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Quarto> findById(@PathVariable(value = "id") Long id) {
-        Quarto quarto = quartoService.findById(id);
+    @GetMapping("{id}")
+    public ResponseEntity<Quarto> findById(@PathVariable Integer id) {
+        Quarto quarto = quartoService.buscarPorId(id);
         return ResponseEntity.ok().body(quarto);
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Quarto> update(@PathVariable(value = "id") Long id, @RequestBody Quarto quarto) {
-        quarto = quartoService.update(id, quarto);
-        return ResponseEntity.ok().body(quarto);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<String> delete(@PathVariable Integer id) {
         quartoService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("Excluido com sucesso.");
     }
 }

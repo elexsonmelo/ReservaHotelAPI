@@ -1,4 +1,4 @@
-package Model;
+package com.example.reservahotelapi.Model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,24 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
-@Table(name = "quartos")
+@Table(name = "quarto")
 public class Quarto implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID quartoId;
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long quartoId;
+    @Column(nullable = false)
     private String nome;
-    @Column(columnDefinition = "boolean default true")
+    @Column(nullable = false)
     private Boolean estaDisponivel;
-
-    public Quarto(Quarto quarto) {
-    }
 }
 

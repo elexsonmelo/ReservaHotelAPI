@@ -4,40 +4,37 @@ import com.example.reservahotelapi.Model.Reserva;
 import com.example.reservahotelapi.Repository.ReservaRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
-public class ReservaServiceImpl implements ReservaService {
+public class  ReservaService {
 
 
     private final ReservaRepository reservaRepository;
 
-    @Override
+    public boolean haQuartoDisponivel(LocalDate dataEntrada, LocalDate dataSaida) {
+        List<Reserva> reservas = reservaRepository.findByDataEntradaBetween(dataEntrada, dataSaida);
+        return reservas.isEmpty();
+    }
+
+
     public List<Reserva> verificarDisponibilidade(LocalDate dataEntrada, LocalDate dataSaida) {
         return reservaRepository.findByDataEntradaBetween(dataEntrada, dataSaida);
     }
-
-    @Override
     public Reserva fazerReserva(Reserva reserva){
         return reserva;
     }
-
-    @Override
     public void cancelarReserva(Long reservaId){
-
     }
 
-    @Override
     public Reserva save(Reserva reserva) {
         return reservaRepository.save(reserva);
     }
-
-    @Override
     public Reserva modificarReserva(Long reservaId, Reserva reservaModificada) {
         return reservaModificada;
     }

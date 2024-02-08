@@ -1,9 +1,11 @@
-package Service;
+package com.example.reservahotelapi.Service;
 
-import Model.Quarto;
-import Repository.QuartoRepository;
+import com.example.reservahotelapi.Model.Quarto;
+import com.example.reservahotelapi.Repository.QuartoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,41 +13,29 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-@NoArgsConstructor
-@AllArgsConstructor
+
+@RequiredArgsConstructor
 @Service
 public class QuartoService {
 
-    @Autowired
-    QuartoRepository quartoRepository;
+    private final QuartoRepository quartoRepository;
 
-    @Transactional
-    public Quarto create(Quarto quarto) {
-        quarto = quartoRepository.save(quarto);
-        return new Quarto(quarto);
+    public Quarto salvar(Quarto quarto) {
+        return quartoRepository.save(quarto);
+
     }
 
-    @Transactional(readOnly = true)
-    public List<Quarto> findAll() {
-        List<Quarto> list = quartoRepository.findAll();
-        return list.stream().map(quarto -> new Quarto(quarto)).collect(Collectors.toList());
+    public List<Quarto> getQuartoDisponivel() {
+        return quartoRepository.findByEstaDisponivelTrue();
     }
 
-    @Transactional(readOnly = true)
-    public Quarto findById(long id) {
-        Optional<Quarto> optionalQuarto = quartoRepository.findById(id);
-        return new Quarto();
+    public Quarto buscarPorId(Integer id) {
+        return quartoRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Id nao encontrado.")
+        );
     }
-
-    @Transactional
-    public Quarto update(Long id, Quarto quarto) {
-        Quarto entity = quartoRepository.getOne(id);
-        entity = quartoRepository.save(entity);
-        return new Quarto(entity);
-    }
-
-    public void delete(long id) {
-       quartoRepository.deleteById(id);
+    public void delete(Integer id) {
+        quartoRepository.deleteById(id);
     }
 }
 

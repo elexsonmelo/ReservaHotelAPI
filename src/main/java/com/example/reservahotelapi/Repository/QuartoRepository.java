@@ -1,7 +1,10 @@
-package Repository;
+package com.example.reservahotelapi.Repository;
 
-import Model.Quarto;
+import com.example.reservahotelapi.Model.Quarto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface QuartoRepository extends JpaRepository<Quarto, Long> {
+import java.util.List;
+
+public interface QuartoRepository extends JpaRepository<Quarto, Integer> {
+    List<Quarto> findByEstaDisponivelTrue();
 }

@@ -1,4 +1,4 @@
-package Model;
+package com.example.reservahotelapi.Model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,29 +8,29 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
-@Table (name = "reservas")
+@Table (name = "reserva")
 public class Reserva implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column
     private double valorReserva;
     @Column
     private LocalDate dataEntrada;
     @Column
     private LocalDate dataSaida;
-    @JoinColumn
+    @JoinColumn(name = "cliente_id")
     @ManyToOne
-    private Cliente clienteId;
-    @JoinColumn
+    private Cliente cliente;
+    @JoinColumn(name = "quarto_id")
     @ManyToOne
-    private Quarto quartoId;
+    private Quarto quarto;
 }
 
 

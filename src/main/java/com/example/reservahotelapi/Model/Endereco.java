@@ -1,4 +1,4 @@
-package Model;
+package com.example.reservahotelapi.Model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,11 +13,11 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-@Table(name ="endereco_clientes")
+@Table(name ="endereco_cliente")
 public class Endereco implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID enderecoId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long enderecoId;
     @Column
     private String numero;
     @Column
