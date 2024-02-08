@@ -12,25 +12,27 @@ import java.time.LocalDate;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/reservas")
+@RequestMapping("/api/reservas")
 public class ReservaController {
 
     @Autowired
     private ReservaService reservaService;
 
     @GetMapping("/disponibilidade")
-    public List<Reserva> consultarDisponibilidade(@RequestBody LocalDate dataEntrada, LocalDate dataSaida) {
-        return reservaService.consultarDisponibilidade(dataEntrada, dataSaida);
+    public List<Reserva> consultarDisponibilidade(@RequestParam String dataInicio, @RequestParam String dataFim) {
+        LocalDate inicio = LocalDate.parse(dataInicio);
+        LocalDate fim = LocalDate.parse(dataFim);
+        return reservaService.verificarDisponibilidade(inicio, fim);
     }
-    @PostMapping("/fazer-reserva")
+    @PostMapping
     public ResponseEntity<Reserva> create(@RequestBody Reserva reserva) {
-        Reserva reserva1 = reservaService.save(reserva);
-        return ResponseEntity.status(HttpStatus.CREATED).body(reserva1);
+        Reserva entity = reservaService.save(reserva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
 
     @PutMapping("/alterar-reserva/{Id}")
     public Reserva alterarReserva(@PathVariable Long reservaId, @RequestBody Reserva reservaModificada) {
-        return reservaService.alterarReserva(reservaId, reservaModificada);
+        return reservaService.modificarReserva(reservaId, reservaModificada);
     }
     @DeleteMapping("/cancelar-reserva/{Id}")
     public void cancelarReserva(@PathVariable Long reservaId) {

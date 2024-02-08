@@ -20,8 +20,11 @@ public class Quarto implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID quartoId;
     @Column
-    private String name;
+    private String nome;
     @Column(columnDefinition = "boolean default true")
     private Boolean estaDisponivel;
+
+    public Quarto(Quarto quarto) {
+    }
 }
 

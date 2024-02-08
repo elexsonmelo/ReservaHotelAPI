@@ -21,9 +21,8 @@ public class QuartoService {
 
     @Transactional
     public Quarto create(Quarto quarto) {
-        Quarto entity = new Quarto();
-        entity = quartoRepository.save(entity);
-        return new Quarto(entity);
+        quarto = quartoRepository.save(quarto);
+        return new Quarto(quarto);
     }
 
     @Transactional(readOnly = true)

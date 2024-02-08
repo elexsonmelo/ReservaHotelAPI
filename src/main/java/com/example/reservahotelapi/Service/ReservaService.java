@@ -1,28 +1,24 @@
-package Service;
+package com.example.reservahotelapi.Service;
 
-import Model.Reserva;
-import Repository.ReservaRepository;
+import com.example.reservahotelapi.Model.Reserva;
+import com.example.reservahotelapi.Repository.ReservaRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class ReservaServiceImpl implements ReservaService {
 
-    @Autowired
-    private EnderecoService enderecoService;
 
     private final ReservaRepository reservaRepository;
 
-    public ReservaServiceImpl(ReservaRepository reservaRepository) {
-        this.reservaRepository = reservaRepository;
-    }
-
     @Override
-    public List<Reserva> consultarDisponibilidade(LocalDate dataEntrada, LocalDate dataSaida) {
+    public List<Reserva> verificarDisponibilidade(LocalDate dataEntrada, LocalDate dataSaida) {
         return reservaRepository.findByDataEntradaBetween(dataEntrada, dataSaida);
     }
 
@@ -32,7 +28,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public void cancelarReserva(Long reservaId) {
+    public void cancelarReserva(Long reservaId){
 
     }
 
@@ -42,7 +38,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public Reserva alterarReserva(Long reservaId, Reserva reservaModificada) {
+    public Reserva modificarReserva(Long reservaId, Reserva reservaModificada) {
         return reservaModificada;
     }
 }

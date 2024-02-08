@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/quartos")
-public class RoomController {
+public class QuartoController {
 
     @Autowired
     private QuartoService quartoService;

@@ -27,10 +27,10 @@ public class Reserva implements Serializable {
     private LocalDate dataSaida;
     @JoinColumn
     @ManyToOne
-    private Cliente cliente;
+    private Cliente clienteId;
     @JoinColumn
     @ManyToOne
-    private Quarto quarto;
+    private Quarto quartoId;
 }
 
 
