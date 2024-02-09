@@ -16,6 +16,6 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
 
     public int verificarDisponibilidade(LocalDate data) {
-        return 10;
+        return 1;
     }
 }

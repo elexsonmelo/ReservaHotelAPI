@@ -22,8 +22,8 @@ public class QuartoController {
     }
     @GetMapping
     public ResponseEntity<List<Quarto>> findAll() {
-        List<Quarto> list = quartoService.getQuartoDisponivel();
-        return ResponseEntity.ok().body(list);
+        List<Quarto> quartos = quartoService.buscarTodos();
+        return ResponseEntity.ok().body(quartos);
     }
     @GetMapping("{id}")
     public ResponseEntity<Quarto> findById(@PathVariable Integer id) {
