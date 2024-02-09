@@ -20,5 +20,6 @@ public class UtilService {
         } else if (ChronoUnit.DAYS.between(hoje, dataInicioEstadia) > 3) {
             throw new Exception("A estadia não pode ser superior a 3 dias.");
         }
+
     }
 }
