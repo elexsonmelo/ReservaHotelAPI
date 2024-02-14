@@ -1,12 +1,12 @@
 package com.example.reservahotelapi.Service;
 
 import com.example.reservahotelapi.Model.Reserva;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-
-
+@RequiredArgsConstructor
 @Service
 public class UtilService {
 

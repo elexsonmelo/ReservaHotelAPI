@@ -2,15 +2,15 @@ package com.example.reservahotelapi.Controller;
 
 import com.example.reservahotelapi.Dto.EnderecoRequest;
 import com.example.reservahotelapi.Service.EnderecoService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RestController
-@RequestMapping("/api/enderecos")
+@RequestMapping("/api/endereco")
 public class EnderecoController {
 
     private final EnderecoService enderecoService;
