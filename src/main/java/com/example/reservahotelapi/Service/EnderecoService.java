@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class EnderecoService {
+
     private final EnderecoFeign enderecoFeign;
     public EnderecoResponse executa(EnderecoRequest request){
         return enderecoFeign.buscaEnderecoCep(request.getCep());

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @Service
-public class UtilService {
+public class DataUtilService {
 
     public class ValidadorReserva {
 
