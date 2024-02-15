@@ -25,6 +25,8 @@ public class Reserva implements Serializable {
     private LocalDate dataEntrada;
     @Column
     private LocalDate dataSaida;
+    @Column
+    private int duracaoEmDias;
     @JoinColumn(name = "cliente_id")
     @ManyToOne
     private Cliente cliente;

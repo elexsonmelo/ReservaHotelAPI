@@ -1,6 +1,7 @@
 package com.example.reservahotelapi.Controller;
 
 import com.example.reservahotelapi.Service.ClienteService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteController {

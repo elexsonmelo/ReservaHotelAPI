@@ -2,13 +2,14 @@ package com.example.reservahotelapi.Controller;
 
 import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Service.QuartoService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/quartos")
 public class QuartoController {

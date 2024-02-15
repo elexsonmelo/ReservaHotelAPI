@@ -14,15 +14,25 @@ import java.util.List;
 @Service
 public class  ReservaService {
 
-
     private final ReservaRepository reservaRepository;
 
-    public boolean haQuartoDisponivel(LocalDate dataEntrada, LocalDate dataSaida) {
-        List<Reserva> reservas = reservaRepository.findByDataEntradaBetween(dataEntrada, dataSaida);
-        return reservas.isEmpty();
+    public void validarDataAntecedencia(LocalDate dataEntrada) throws Exception {
+        LocalDate hoje = LocalDate.now();
+        if (dataEntrada.isBefore(hoje.plusDays(1))) {
+            throw new Exception("A reserva deve ser feita com no mínimo 1 dia de antecedência");
+        }
     }
-
-
+    public void validarDuracao(int duracaoEmDias) throws Exception {
+        if (duracaoEmDias > 3) {
+            throw new Exception("A estadia não pode ser superior a 3 dias");
+        }
+    }
+    public void validarDataLimite(LocalDate dataEntrada) throws Exception {
+        LocalDate hoje = LocalDate.now();
+        if (dataEntrada.isAfter(hoje.plusDays(30))) {
+            throw new Exception("A reserva não pode ser solicitada com mais de 30 dias de antecedência");
+        }
+    }
     public List<Reserva> verificarDisponibilidade(LocalDate dataEntrada, LocalDate dataSaida) {
         return reservaRepository.findByDataEntradaBetween(dataEntrada, dataSaida);
     }
