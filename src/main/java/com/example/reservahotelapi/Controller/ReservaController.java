@@ -25,7 +25,7 @@ public class ReservaController {
     @PostMapping("/criar")
     public ResponseEntity<String> criarReserva(@RequestBody Reserva reserva) {
         try {
-            reservaService.validarReserva(reserva);
+            reservaService.fazerReserva(reserva);
             return ResponseEntity.ok("Reserva realizada com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
