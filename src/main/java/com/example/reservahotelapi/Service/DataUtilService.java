@@ -10,8 +10,6 @@ import java.time.LocalDate;
 @Service
 public class DataUtilService {
 
-    private final ReservaService reservaService;
-
 
     private void validarData(Reserva reserva) throws Exception {
         validarDataEntrada(reserva);
