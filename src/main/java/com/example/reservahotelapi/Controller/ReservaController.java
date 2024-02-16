@@ -2,10 +2,7 @@ package com.example.reservahotelapi.Controller;
 
 import com.example.reservahotelapi.Model.Reserva;
 import com.example.reservahotelapi.Service.ReservaService;
-import com.example.reservahotelapi.Service.UtilService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,34 +22,11 @@ public class ReservaController {
         LocalDate fim = LocalDate.parse(dataFim);
         return reservaService.verificarDisponibilidade(inicio, fim);
     }
-    @PostMapping
-    public ResponseEntity<Reserva> create(@RequestBody Reserva reserva) {
-        Reserva entity = reservaService.save(reserva);
-        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
-    }
-    @PostMapping("/validar-antecedencia")
-    public ResponseEntity<String> validarDataAntecedencia(@RequestBody Reserva reserva) {
+    @PostMapping("/criar")
+    public ResponseEntity<String> criarReserva(@RequestBody Reserva reserva) {
         try {
-            reservaService.validarDataAntecedencia(reserva.getDataEntrada());
-            return ResponseEntity.ok("Data de entrada válida");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-    @PostMapping("/validar-duracao")
-    public ResponseEntity<String> validarDuracao(@RequestBody Reserva reserva) {
-        try {
-            reservaService.validarDuracao(reserva.getDuracaoEmDias());
-            return ResponseEntity.ok("Duração válida");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-    @PostMapping("/validar-limite")
-    public ResponseEntity<String> validarDataLimite(@RequestBody Reserva reserva) {
-        try {
-            reservaService.validarDataLimite(reserva.getDataEntrada());
-            return ResponseEntity.ok("Data limite válida");
+            reservaService.fazerReserva(reserva);
+            return ResponseEntity.ok("Reserva realizada com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
