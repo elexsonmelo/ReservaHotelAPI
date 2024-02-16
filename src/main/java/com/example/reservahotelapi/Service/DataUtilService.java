@@ -10,23 +10,26 @@ import java.time.LocalDate;
 @Service
 public class DataUtilService {
 
-    public class ValidadorReserva {
+    private final ReservaService reservaService;
 
-        private void validarReserva(Reserva reserva) throws Exception {
-            validarDuracao(reserva);
-            validarDisponibilidadeQuarto(reserva);
-        }
 
-        private void validarDuracao(Reserva reserva) throws Exception {
-            if (reserva.getDuracaoEmDias() > 3) {
-                throw new Exception("A estadia não pode ser superior a 3 dias");
-            }
+    private void validarData(Reserva reserva) throws Exception {
+        validarDataEntrada(reserva);
+        validarDataLimite(reserva);
+
+    }
+    public void validarDataEntrada(Reserva reserva) throws Exception {
+        LocalDate hoje = LocalDate.now();
+        if (reserva.getDataEntrada().isBefore(hoje.plusDays(1))) {
+            throw new Exception("A reserva deve ser feita com no mínimo 1 dia de antecedência");
         }
-        private void validarDisponibilidadeQuarto(Reserva reserva) throws Exception {
-            if (!reserva.getQuarto().getEstaDisponivel()) {
-                throw new Exception("O quarto já está reservado para as datas solicitadas");
-            }
+    }
+    public void validarDataLimite(Reserva reserva) throws Exception {
+        LocalDate hoje = LocalDate.now();
+        if (reserva.getDataEntrada().isAfter(hoje.plusDays(30))) {
+            throw new Exception("A reserva não pode ser solicitada com mais de 30 dias de antecedência");
         }
     }
 }
+
 
