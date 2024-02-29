@@ -50,8 +50,8 @@ Exemplo do corpo da requisição:
         {
             "id": 1,
             "valorReserva": 1200.0
-            "dataEntrada": "2024-01-12T12:00:00Z",
-            "dataSaida": "2024-01-15T12:00:00Z",
+            "dataEntrada": "2024-01-12",
+            "dataSaida": "2024-01-15",
             "clienteId": 1,
             "quartoId": 1,
         },
