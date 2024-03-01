@@ -20,7 +20,7 @@ public class Quarto implements Serializable {
     @Column(nullable = false)
     private Long quartoId;
     @Column(nullable = false)
-    private String nome;
+    private int numero;
     @Column(nullable = false)
     private Boolean estaDisponivel;
 }

@@ -1,5 +1,6 @@
 package com.example.reservahotelapi.Service;
 
+import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Model.Reserva;
 import com.example.reservahotelapi.Repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,22 +18,14 @@ public class  ReservaService {
     private final DataUtilService dataUtilService;
 
     public void fazerReserva(Reserva reserva) throws Exception {
-        dataUtilService.validarDataEntrada(reserva);
-        validarAntecedencia(reserva);
+        dataUtilService.validarDataEntrada(reserva.getDataEntrada());
         dataUtilService.validarDuracao(reserva.getDuracaoEmDias());
-        validarAntecedencia(reserva);
-        validarDisponibilidadeQuarto(reserva);
+        validarQuartoDisponivel(reserva.getQuarto());
         reservaRepository.save(reserva);
     }
-    private void validarDisponibilidadeQuarto(Reserva reserva) throws Exception {
-        if (!reserva.getQuarto().getEstaDisponivel()) {
-            throw new Exception("O quarto já está reservado para as datas solicitadas.");
-        }
-    }
-    public void validarAntecedencia(Reserva reserva) throws Exception {
-        LocalDate hoje = LocalDate.now();
-        if (reserva.getDataEntrada().isAfter(hoje.plusDays(30))) {
-            throw new Exception("A reserva não pode ser solicitada com mais de 30 dias de antecedência.");
+    private void validarQuartoDisponivel(Quarto quarto) throws Exception {
+        if (Boolean.FALSE.equals(quarto.getEstaDisponivel())) {
+            throw new Exception("O quarto já está reservado para as datas solicitadas");
         }
     }
     public List<Reserva> verificarDisponibilidade(LocalDate dataEntrada, LocalDate dataSaida) {
