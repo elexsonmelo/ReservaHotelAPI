@@ -18,8 +18,6 @@ public class  ReservaService {
     private final DataUtilService dataUtilService;
 
     public void fazerReserva(Reserva reserva) throws Exception {
-        dataUtilService.validarDataEntrada(reserva.getDataEntrada());
-        dataUtilService.validarDuracao(reserva.getDuracaoEmDias());
         validarQuartoDisponivel(reserva.getQuarto());
         reservaRepository.save(reserva);
     }
@@ -35,8 +33,12 @@ public class  ReservaService {
     public void cancelarReserva(Long reservaId){
     }
 
-    public Reserva modificarReserva(Long reservaId, Reserva reservaModificada) {
+    public Reserva modificarReserva(Reserva reservaModificada) {
         return reservaModificada;
+    }
+
+    public Reserva consultarReserva(int id) {
+        return null;
     }
 }
 

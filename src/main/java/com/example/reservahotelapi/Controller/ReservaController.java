@@ -18,11 +18,14 @@ public class ReservaController {
 
     private final ReservaService reservaService;
 
-    @GetMapping("/disponibilidade")
-    public List<Reserva> consultarDisponibilidade(@RequestParam String dataInicio, @RequestParam String dataFim) {
-        LocalDate inicio = LocalDate.parse(dataInicio);
-        LocalDate fim = LocalDate.parse(dataFim);
-        return reservaService.verificarDisponibilidade(inicio, fim);
+    @GetMapping("/consultar/{id}")
+    public ResponseEntity<Reserva> consultarReserva(@PathVariable int id) {
+        Reserva reserva = reservaService.consultarReserva(id);
+        if (reserva != null) {
+            return ResponseEntity.ok(reserva);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     @PostMapping("/criar")
     public ResponseEntity<String> criarReserva(@RequestBody Reserva reserva) {
@@ -33,12 +36,24 @@ public class ReservaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PutMapping("/alterar-reserva/{Id}")
-    public Reserva alterarReserva(@PathVariable Long reservaId, @RequestBody Reserva reservaModificada) {
-        return reservaService.modificarReserva(reservaId, reservaModificada);
+
+    @PutMapping("/modificar")
+    public ResponseEntity<String> modificarReserva(@RequestBody Reserva reserva) {
+        try {
+            reservaService.modificarReserva(reserva);
+            return ResponseEntity.ok("Reserva modificada com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
-    @DeleteMapping("/deletar-reserva/{Id}")
-    public void cancelarReserva(@PathVariable Long reservaId) {
-        reservaService.cancelarReserva(reservaId);
+
+    @DeleteMapping("/cancelar/{id}")
+    public ResponseEntity<String> cancelarReserva(@PathVariable int id) {
+        try {
+            reservaService.cancelarReserva((long) id);
+            return ResponseEntity.ok("Reserva cancelada com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }
