@@ -3,12 +3,13 @@ package com.example.reservahotelapi.Controller;
 import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Service.QuartoService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/quartos")
@@ -27,8 +28,8 @@ public class QuartoController {
         return ResponseEntity.ok().body(quartos);
     }
     @GetMapping("{id}")
-    public ResponseEntity<Quarto> findById(@PathVariable Integer id) {
-        Quarto quarto = quartoService.buscarPorId(id);
+    public ResponseEntity<Optional<Quarto>> findById(@PathVariable Integer id) {
+        Optional<Quarto> quarto = quartoService.buscarPorId(id);
         return ResponseEntity.ok().body(quarto);
     }
     @DeleteMapping("/excluir/{id}")

@@ -1,16 +1,14 @@
 package com.example.reservahotelapi.Controller;
 
 import com.example.reservahotelapi.Model.Reserva;
-import com.example.reservahotelapi.Service.DataUtilService;
 import com.example.reservahotelapi.Service.ReservaService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/reservas")
@@ -18,14 +16,20 @@ public class ReservaController {
 
     private final ReservaService reservaService;
 
-    @GetMapping("/consultar/{id}")
-    public ResponseEntity<Reserva> consultarReserva(@PathVariable int id) {
-        Reserva reserva = reservaService.consultarReserva(id);
-        if (reserva != null) {
-            return ResponseEntity.ok(reserva);
-        } else {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/{id}")
+    public ResponseEntity<String> consultarReserva(@PathVariable("id") Long reservaId) {
+        try {
+            Reserva reserva = reservaService.consultarReserva(reservaId);
+            return ResponseEntity.ok(reserva.toString());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<String> listarReservas() {
+        List<Reserva> reservas = reservaService.listarReservas();
+        return ResponseEntity.ok(reservas.toString());
     }
     @PostMapping("/criar")
     public ResponseEntity<String> criarReserva(@RequestBody Reserva reserva) {
@@ -37,23 +41,23 @@ public class ReservaController {
         }
     }
 
-    @PutMapping("/modificar")
-    public ResponseEntity<String> modificarReserva(@RequestBody Reserva reserva) {
+    @PutMapping("/modificar/{id}")
+    public ResponseEntity<String> modificarReserva(@PathVariable("id") Long reservaId, @RequestBody Reserva reservaAtualizada) {
         try {
-            reservaService.modificarReserva(reserva);
-            return ResponseEntity.ok("Reserva modificada com sucesso!");
+            Reserva reserva = reservaService.modificarReserva(reservaId, reservaAtualizada);
+            return ResponseEntity.ok(reserva.toString());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/cancelar/{id}")
-    public ResponseEntity<String> cancelarReserva(@PathVariable int id) {
+    public ResponseEntity<String> cancelarReserva(@PathVariable("id") Long reservaId) {
         try {
-            reservaService.cancelarReserva((long) id);
-            return ResponseEntity.ok("Reserva cancelada com sucesso!");
+            reservaService.cancelarReserva(reservaId);
+            return ResponseEntity.ok("Reserva cancelada com sucesso.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
