@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,13 +26,13 @@ public class Reserva implements Serializable {
     private LocalDate dataEntrada;
     @Column
     private LocalDate dataSaida;
-    @Column
+    @Column(nullable = false)
     private int duracaoEmDias;
     @JoinColumn(name = "cliente_id")
     @ManyToOne
     private Cliente cliente;
     @JoinColumn(name = "quarto_id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Quarto quarto;
 }
 

@@ -12,20 +12,20 @@ public class DataUtilService {
 
 
     private void validarData(Reserva reserva) throws Exception {
-        validarDataEntrada(reserva);
-        validarDataLimite(reserva);
+        validarDataEntrada(reserva.getDataEntrada());
+        validarAntecedenciaMaxima(reserva.getDataEntrada());
         validarDuracao(reserva.getDuracaoEmDias());
 
     }
-    public void validarDataEntrada(Reserva reserva) throws Exception {
+    public void validarDataEntrada(LocalDate dataEntrada) throws Exception {
         LocalDate hoje = LocalDate.now();
-        if (reserva.getDataEntrada().isBefore(hoje.plusDays(1))) {
+        if (dataEntrada.isBefore(hoje.plusDays(1))) {
             throw new Exception("A reserva deve ser feita com no mínimo 1 dia de antecedência");
         }
     }
-    public void validarDataLimite(Reserva reserva) throws Exception {
+    private void validarAntecedenciaMaxima(LocalDate dataEntrada) throws Exception {
         LocalDate hoje = LocalDate.now();
-        if (reserva.getDataEntrada().isAfter(hoje.plusDays(30))) {
+        if (dataEntrada.isAfter(hoje.plusDays(30))) {
             throw new Exception("A reserva não pode ser solicitada com mais de 30 dias de antecedência");
         }
     }
