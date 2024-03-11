@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 @Repository
-public interface QuartoRepository extends JpaRepository<Quarto, Integer> {
-    void deleteById(Integer id);
-
-    List<Quarto> findByDisponivelTrueAndNotReservedBetween(LocalDate dataEntrada, LocalDate dataSaida);
+public interface QuartoRepository extends JpaRepository<Quarto, Long> {
+    
 }
