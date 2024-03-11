@@ -7,6 +7,7 @@ import com.example.reservahotelapi.Repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class  ReservaService {
     private final QuartoRepository quartoRepository;
 
     public Reserva fazerReserva(Reserva reserva) throws Exception {
-        DataUtilService.validarData(reserva.getDataEntrada(), reserva.getDataSaida());
+        dataUtilService.validarData(reserva);
         List<Quarto> quartosDisponiveis = quartoRepository.findByDisponivelTrueAndNotReservedBetween(
                 reserva.getDataEntrada(), reserva.getDataSaida());
 
@@ -28,7 +29,6 @@ public class  ReservaService {
             throw new Exception("Não há quartos disponíveis para o período da reserva.");
         }
         Quarto quarto = quartosDisponiveis.get(0);
-        quarto.setEstaDisponivel(false);
         reserva.setQuarto(quarto);
         return reservaRepository.save(reserva);
     }
@@ -36,7 +36,7 @@ public class  ReservaService {
     public Reserva modificarReserva(Long reservaId, Reserva reservaAtualizada) throws Exception {
         Reserva reserva = reservaRepository.findById(reservaId)
                 .orElseThrow(() -> new Exception("Reserva não encontrada."));
-        DataUtilService.validarData(reservaAtualizada.getDataEntrada(), reserva.getDataSaida());
+        dataUtilService.validarData(reserva);
         reserva.setDataEntrada(reservaAtualizada.getDataEntrada());
         reserva.setDataSaida(reservaAtualizada.getDataSaida());
         return reservaRepository.save(reserva);
