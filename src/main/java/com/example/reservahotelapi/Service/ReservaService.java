@@ -1,8 +1,8 @@
 package com.example.reservahotelapi.Service;
 
+import com.example.reservahotelapi.Model.Cliente;
 import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Model.Reserva;
-import com.example.reservahotelapi.Repository.QuartoRepository;
 import com.example.reservahotelapi.Repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,25 +18,26 @@ public class  ReservaService {
 
     private final DataUtilService dataUtilService;
 
-    private final QuartoRepository quartoRepository;
+    private final QuartoService quartoService;
 
     public Reserva fazerReserva(Reserva reserva) throws Exception {
-        dataUtilService.validarData(reserva);
-        List<Quarto> quartosDisponiveis = quartoRepository.findByDisponivelTrueAndNotReservedBetween(
-                reserva.getDataEntrada(), reserva.getDataSaida());
+        Cliente cliente = reserva.getCliente();
+        Quarto quarto = reserva.getQuarto();
+        LocalDate dataEntrada = reserva.getDataEntrada();
+        LocalDate dataSaida = reserva.getDataSaida();
 
-        if (quartosDisponiveis.isEmpty()) {
-            throw new Exception("Não há quartos disponíveis para o período da reserva.");
+        dataUtilService.validarData(dataEntrada, dataSaida);
+
+        if (!quartoService.quartoDisponivel(quarto)) {
+            throw new Exception("Quarto não disponível para as datas selecionadas");
         }
-        Quarto quarto = quartosDisponiveis.get(0);
-        reserva.setQuarto(quarto);
         return reservaRepository.save(reserva);
     }
 
     public Reserva modificarReserva(Long reservaId, Reserva reservaAtualizada) throws Exception {
         Reserva reserva = reservaRepository.findById(reservaId)
                 .orElseThrow(() -> new Exception("Reserva não encontrada."));
-        dataUtilService.validarData(reserva);
+        dataUtilService.validarData(reserva.getDataEntrada(), reserva.getDataSaida());
         reserva.setDataEntrada(reservaAtualizada.getDataEntrada());
         reserva.setDataSaida(reservaAtualizada.getDataSaida());
         return reservaRepository.save(reserva);
@@ -45,7 +46,6 @@ public class  ReservaService {
     public void cancelarReserva(Long reservaId) throws Exception {
         Reserva reserva = reservaRepository.findById(reservaId)
                 .orElseThrow(() -> new Exception("Reserva não encontrada."));
-        reserva.getQuarto().setEstaDisponivel(true);
         reservaRepository.delete(reserva);
     }
 
@@ -58,5 +58,7 @@ public class  ReservaService {
         return reservaRepository.findAll();
     }
 }
+
+
 
 

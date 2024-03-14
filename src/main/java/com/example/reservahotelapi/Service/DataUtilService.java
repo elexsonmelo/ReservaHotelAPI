@@ -1,7 +1,11 @@
 package com.example.reservahotelapi.Service;
 
 
+import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Model.Reserva;
+import com.example.reservahotelapi.Repository.QuartoRepository;
+import com.example.reservahotelapi.Repository.ReservaRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +15,11 @@ import java.time.LocalDate;
 @Service
 public class DataUtilService {
 
-    public void validarData(Reserva reserva) throws Exception {
+    public void validarData(LocalDate dataEntrada, LocalDate dataSaida) throws Exception {
         LocalDate hoje = LocalDate.now();
-        validarAntecedencia(reserva.getDataEntrada(), hoje);
-        validarDuracao(reserva.getDataEntrada(), reserva.getDataSaida());
-        validarAntecedenciaMaxima(reserva.getDataEntrada());
+        validarAntecedencia(dataEntrada, hoje);
+        validarDuracao(dataEntrada, dataSaida);
+        validarAntecedenciaMaxima(dataEntrada);
     }
     private void validarAntecedencia(LocalDate dataEntrada, LocalDate hoje) throws Exception {
         if (dataEntrada.isBefore(hoje.plusDays(1))) {
@@ -35,7 +39,7 @@ public class DataUtilService {
     }
 
     private void validarAntecedenciaMaxima(LocalDate dataEntrada) throws Exception {
-        LocalDate limiteAntecedencia = LocalDate.now().plusDays(30);
+        LocalDate limiteAntecedencia = LocalDate.now().plusMonths(1);
         if (dataEntrada.isAfter(limiteAntecedencia)) {
             throw new Exception("A reserva não pode ser solicitada com mais de 30 dias de antecedência");
         }

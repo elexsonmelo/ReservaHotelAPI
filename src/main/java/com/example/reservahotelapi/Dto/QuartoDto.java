@@ -11,16 +11,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuartoDTO implements Serializable {
-
+public class QuartoDto implements Serializable {
     private Long id;
     private int numero;
-    private Boolean estaDisponivel;
-
-    public QuartoDTO(Quarto entity) {
-        this.id = entity.getQuartoId();
-        this.numero = entity.getNumero();
-        this.estaDisponivel = entity.getEstaDisponivel();
-    }
 }
 

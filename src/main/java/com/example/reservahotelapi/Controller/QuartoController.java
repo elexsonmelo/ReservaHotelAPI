@@ -1,10 +1,8 @@
 package com.example.reservahotelapi.Controller;
 
-import com.example.reservahotelapi.Dto.QuartoDTO;
+import com.example.reservahotelapi.Dto.QuartoDto;
 import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Service.QuartoService;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,26 +25,26 @@ public class QuartoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<QuartoDTO> update(@PathVariable Long id, @RequestBody QuartoDTO quartoDTO) {
-        quartoDTO = quartoService.update(id, quartoDTO);
+    public ResponseEntity<QuartoDto> update(@PathVariable Long id, @RequestBody QuartoDto quartoDTO) {
+        quartoDTO = quartoService.atualizar(id, quartoDTO);
         return ResponseEntity.ok().body(quartoDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<QuartoDTO>> findAll() {
-        List<QuartoDTO> quartos = quartoService.buscarTodos();
+    public ResponseEntity<List<QuartoDto>> findAll() {
+        List<QuartoDto> quartos = quartoService.buscarTodos();
         return ResponseEntity.ok().body(quartos);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<QuartoDTO> findById(@PathVariable Long id) {
-        QuartoDTO quarto = quartoService.buscarPorId(id);
+    public ResponseEntity<QuartoDto> findById(@PathVariable Long id) {
+        QuartoDto quarto = quartoService.buscarPorId(id);
         return ResponseEntity.ok().body(quarto);
     }
 
     @DeleteMapping("/excluir/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        quartoService.delete(id);
+        quartoService.deletar(id);
         return ResponseEntity.ok().body("Excluído com sucesso.");
     }
 }

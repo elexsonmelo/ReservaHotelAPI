@@ -8,5 +8,4 @@ import java.time.LocalDate;
 import java.util.List;
 @Repository
 public interface QuartoRepository extends JpaRepository<Quarto, Long> {
-    
 }
