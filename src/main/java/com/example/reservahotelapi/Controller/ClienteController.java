@@ -19,19 +19,14 @@ public class ClienteController {
 
 private final ClienteService clienteService;
 
-    @GetMapping("{cep}")
-    public CepResultDto consultaCep(@PathVariable("cep") String cep) {
-        return clienteService.consultarCep(cep);
-    }
-
     @GetMapping
-    public ResponseEntity<List<ClienteDto>> getAllClientes() {
+    public ResponseEntity<List<ClienteDto>> findAll() {
         List<ClienteDto> clientes = clienteService.getAllClientes();
         return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDto> getClienteById(@PathVariable Long id) {
+    public ResponseEntity<ClienteDto> findById(@PathVariable Long id) {
         ClienteDto clienteDto = clienteService.getClienteById(id);
         if (clienteDto != null) {
             return new ResponseEntity<>(clienteDto, HttpStatus.OK);
@@ -41,8 +36,8 @@ private final ClienteService clienteService;
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<ClienteDto> create (@RequestBody ClienteDto clienteDto) {
-        ClienteDto createdCliente = clienteService.createCliente(clienteDto);
+    public ResponseEntity<ClienteDto> create(@RequestBody ClienteDto clienteDto) {
+        ClienteDto createdCliente = clienteService.salvarCliente(clienteDto);
         return new ResponseEntity<>(createdCliente, HttpStatus.CREATED);
     }
 

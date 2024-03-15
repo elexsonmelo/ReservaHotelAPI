@@ -17,7 +17,7 @@ public class ReservaController {
     private final ReservaService reservaService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> consultarReserva(@PathVariable("id") Long reservaId) {
+    public ResponseEntity<String> findById(@PathVariable("id") Long reservaId) {
         try {
             Reserva reserva = reservaService.consultarReserva(reservaId);
             return ResponseEntity.ok(reserva.toString());
@@ -27,12 +27,12 @@ public class ReservaController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<String> listarReservas() {
+    public ResponseEntity<String> findAll() {
         List<Reserva> reservas = reservaService.listarReservas();
         return ResponseEntity.ok(reservas.toString());
     }
     @PostMapping("/criar")
-    public ResponseEntity<String> criarReserva(@RequestBody Reserva reserva) {
+    public ResponseEntity<String> create(@RequestBody Reserva reserva) {
         try {
             reservaService.fazerReserva(reserva);
             return ResponseEntity.ok("Reserva realizada com sucesso!");
@@ -42,7 +42,7 @@ public class ReservaController {
     }
 
     @PutMapping("/modificar/{id}")
-    public ResponseEntity<String> modificarReserva(@PathVariable("id") Long reservaId, @RequestBody Reserva reservaAtualizada) {
+    public ResponseEntity<String> update(@PathVariable("id") Long reservaId, @RequestBody Reserva reservaAtualizada) {
         try {
             Reserva reserva = reservaService.modificarReserva(reservaId, reservaAtualizada);
             return ResponseEntity.ok(reserva.toString());
@@ -52,7 +52,7 @@ public class ReservaController {
     }
 
     @DeleteMapping("/cancelar/{id}")
-    public ResponseEntity<String> cancelarReserva(@PathVariable("id") Long reservaId) {
+    public ResponseEntity<String> delete(@PathVariable("id") Long reservaId) {
         try {
             reservaService.cancelarReserva(reservaId);
             return ResponseEntity.ok("Reserva cancelada com sucesso.");

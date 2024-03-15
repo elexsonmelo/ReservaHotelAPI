@@ -20,6 +20,9 @@ public class  ReservaService {
 
     private final QuartoService quartoService;
 
+    private final ClienteService clienteService;
+
+
     public Reserva fazerReserva(Reserva reserva) throws Exception {
         Cliente cliente = reserva.getCliente();
         Quarto quarto = reserva.getQuarto();

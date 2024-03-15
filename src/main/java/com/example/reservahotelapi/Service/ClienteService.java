@@ -5,6 +5,7 @@ import com.example.reservahotelapi.Dto.CepResultDto;
 import com.example.reservahotelapi.Dto.ClienteDto;
 import com.example.reservahotelapi.Model.Cliente;
 import com.example.reservahotelapi.Repository.ClienteRepository;
+import com.example.reservahotelapi.Repository.EnderecoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,14 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    public CepResultDto consultarCep(String cep) {
+    private final EnderecoRepository enderecoRepository;
+
+    private boolean validarCep(String cep) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<CepResultDto> resp = restTemplate.getForEntity(String.format("https://viacep.com.br/ws/%s/json/", cep), CepResultDto.class);
-        return resp.getBody();
+        ResponseEntity<CepResultDto> resp = restTemplate.getForEntity(
+                String.format("https://viacep.com.br/ws/%s/json/", cep), CepResultDto.class);
+        CepResultDto cepResultDto = resp.getBody();
+        return cepResultDto != null && cepResultDto.getCep() != null;
     }
 
     public List<ClienteDto> getAllClientes() {
@@ -38,10 +43,13 @@ public class ClienteService {
         Optional<Cliente> optionalCliente = clienteRepository.findById(id);
         return optionalCliente.map(this::convertToDto).orElse(null);
     }
-    public ClienteDto createCliente(ClienteDto clienteDTO) {
-        Cliente cliente = convertToEntity(clienteDTO);
-        cliente = clienteRepository.save(cliente);
-        return convertToDto(cliente);
+    public ClienteDto salvarCliente(ClienteDto clienteDto) {
+        if (!validarCep(clienteDto.getEndereco().getCep())) {
+            throw new IllegalArgumentException("CEP inválido");
+        }
+        Cliente cliente = convertToEntity(clienteDto);
+        Cliente clienteSalvo = clienteRepository.save(cliente);
+        return convertToDto(clienteSalvo);
     }
     public ClienteDto updateCliente(Long id, ClienteDto clienteDTO) {
         Cliente cliente = convertToEntity(clienteDTO);

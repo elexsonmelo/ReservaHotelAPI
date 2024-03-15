@@ -1,11 +1,6 @@
 package com.example.reservahotelapi.Service;
 
 
-import com.example.reservahotelapi.Model.Quarto;
-import com.example.reservahotelapi.Model.Reserva;
-import com.example.reservahotelapi.Repository.QuartoRepository;
-import com.example.reservahotelapi.Repository.ReservaRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +13,7 @@ public class DataUtilService {
     public void validarData(LocalDate dataEntrada, LocalDate dataSaida) throws Exception {
         LocalDate hoje = LocalDate.now();
         validarAntecedencia(dataEntrada, hoje);
-        validarDuracao(dataEntrada, dataSaida);
+        validarDuracaoEstadia(dataEntrada, dataSaida);
         validarAntecedenciaMaxima(dataEntrada);
     }
     private void validarAntecedencia(LocalDate dataEntrada, LocalDate hoje) throws Exception {
@@ -27,13 +22,8 @@ public class DataUtilService {
         }
     }
 
-    private void validarDuracao(LocalDate dataEntrada, LocalDate dataSaida) throws Exception {
-        if (dataSaida.isBefore(dataEntrada) || dataSaida.isEqual(dataEntrada)) {
-            throw new Exception("A data de saída deve ser posterior à data de entrada");
-        }
-
-        long duracaoEmDias = calcularDuracaoEmDias(dataEntrada, dataSaida);
-        if (duracaoEmDias > 3) {
+    private void validarDuracaoEstadia(LocalDate dataEntrada, LocalDate dataSaida) throws Exception {
+        if (dataEntrada.plusDays(3).isBefore(dataSaida)) {
             throw new Exception("A estadia não pode ser superior a 3 dias");
         }
     }
@@ -43,10 +33,6 @@ public class DataUtilService {
         if (dataEntrada.isAfter(limiteAntecedencia)) {
             throw new Exception("A reserva não pode ser solicitada com mais de 30 dias de antecedência");
         }
-    }
-
-    private long calcularDuracaoEmDias(LocalDate dataEntrada, LocalDate dataSaida) {
-        return dataEntrada.until(dataSaida, java.time.temporal.ChronoUnit.DAYS);
     }
 }
 

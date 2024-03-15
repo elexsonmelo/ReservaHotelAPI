@@ -3,11 +3,9 @@ package com.example.reservahotelapi.Service;
 import com.example.reservahotelapi.Dto.QuartoDto;
 import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Repository.QuartoRepository;
-import com.example.reservahotelapi.Repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,14 +36,14 @@ public class QuartoService {
     public void deletar(Long id) {
         quartoRepository.deleteById(id);
     }
-    public QuartoDto atualizar(Long id, QuartoDto quartoDTO) {
-        return quartoDTO;
+    public QuartoDto atualizar(Long id, QuartoDto quartoDto) {
+        return quartoDto;
     }
     public boolean quartoDisponivel(Quarto quarto) throws Exception {
         if (quarto != null && !quarto.getEstaDisponivel()){
             throw new Exception("Quarto selecionado nao esta disponivel!");
         }
-        return quarto.getEstaDisponivel();
+        return true;
     }
 }
 
