@@ -1,39 +1,50 @@
 package com.example.reservahotelapi.Controller;
 
+import com.example.reservahotelapi.Dto.QuartoDto;
 import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Service.QuartoService;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@AllArgsConstructor
+
+
 @RestController
 @RequestMapping("/api/quartos")
 public class QuartoController {
 
     private final QuartoService quartoService;
-
-    @PostMapping
-    public ResponseEntity<Quarto> create(@RequestBody Quarto quarto) {
-        Quarto entity = quartoService.salvar(quarto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+    public QuartoController(QuartoService quartoService) {
+        this.quartoService = quartoService;
     }
-    @GetMapping
-    public ResponseEntity<List<Quarto>> findAll() {
-        List<Quarto> quartos = quartoService.buscarTodos();
+
+    @PostMapping("/criar")
+    public ResponseEntity<QuartoDto> create(@RequestBody QuartoDto quartoDto) {
+        QuartoDto dto = quartoService.salvar(quartoDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    }
+    @PutMapping("/modificar/{id}")
+    public ResponseEntity<QuartoDto> update(@PathVariable Long id, @RequestBody QuartoDto quartoDTO) {
+        quartoDTO = quartoService.atualizar(id, quartoDTO);
+        return ResponseEntity.ok().body(quartoDTO);
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<QuartoDto>> findAll() {
+        List<QuartoDto> quartos = quartoService.buscarTodos();
         return ResponseEntity.ok().body(quartos);
     }
+
     @GetMapping("{id}")
-    public ResponseEntity<Quarto> findById(@PathVariable Integer id) {
-        Quarto quarto = quartoService.buscarPorId(id);
+    public ResponseEntity<QuartoDto> findById(@PathVariable Long id) {
+        QuartoDto quarto = quartoService.buscarPorId(id);
         return ResponseEntity.ok().body(quarto);
     }
+
     @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id) {
-        quartoService.delete(id);
-        return ResponseEntity.ok().body("Excluido com sucesso.");
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        quartoService.deletar(id);
+        return ResponseEntity.ok().body("Excluído com sucesso.");
     }
 }

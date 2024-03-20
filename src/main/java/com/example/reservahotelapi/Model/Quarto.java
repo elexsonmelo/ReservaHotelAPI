@@ -21,7 +21,7 @@ public class Quarto implements Serializable {
     private Long quartoId;
     @Column(nullable = false)
     private int numero;
-    @Column(nullable = false)
+    @Column(columnDefinition = "boolean default true")
     private Boolean estaDisponivel;
 }
 

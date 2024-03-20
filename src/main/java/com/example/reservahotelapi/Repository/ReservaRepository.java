@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
-    List<Reserva> findByDataEntradaBetween(LocalDate dataEntrada, LocalDate dataSaida);
 }
 
 
