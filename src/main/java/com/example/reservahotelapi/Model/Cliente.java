@@ -25,7 +25,7 @@ public class Cliente implements Serializable {
     @Column
     private String email;
     @JoinColumn(name = "endereco_cliente")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 }
 

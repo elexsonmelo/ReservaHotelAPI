@@ -19,18 +19,18 @@ public class QuartoController {
         this.quartoService = quartoService;
     }
 
-    @PostMapping
-    public ResponseEntity<Quarto> create(@RequestBody Quarto quarto) {
-        Quarto entity = quartoService.salvar(quarto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+    @PostMapping("/criar")
+    public ResponseEntity<QuartoDto> create(@RequestBody QuartoDto quartoDto) {
+        QuartoDto dto = quartoService.salvar(quartoDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/modificar/{id}")
     public ResponseEntity<QuartoDto> update(@PathVariable Long id, @RequestBody QuartoDto quartoDTO) {
         quartoDTO = quartoService.atualizar(id, quartoDTO);
         return ResponseEntity.ok().body(quartoDTO);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<QuartoDto>> findAll() {
         List<QuartoDto> quartos = quartoService.buscarTodos();
         return ResponseEntity.ok().body(quartos);

@@ -1,7 +1,9 @@
 package com.example.reservahotelapi.Service;
 
+import com.example.reservahotelapi.Dto.ClienteDto;
+import com.example.reservahotelapi.Dto.QuartoDto;
+import com.example.reservahotelapi.Dto.ReservaDto;
 import com.example.reservahotelapi.Model.Cliente;
-import com.example.reservahotelapi.Model.Quarto;
 import com.example.reservahotelapi.Model.Reserva;
 import com.example.reservahotelapi.Repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +11,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class  ReservaService {
+public class ReservaService {
 
     private final ReservaRepository reservaRepository;
 
@@ -23,27 +26,31 @@ public class  ReservaService {
     private final ClienteService clienteService;
 
 
-    public Reserva fazerReserva(Reserva reserva) throws Exception {
-        Cliente cliente = reserva.getCliente();
-        Quarto quarto = reserva.getQuarto();
-        LocalDate dataEntrada = reserva.getDataEntrada();
-        LocalDate dataSaida = reserva.getDataSaida();
-
+    public ReservaDto fazerReserva(ReservaDto reservaDTO) throws Exception {
+        ClienteDto cliente = reservaDTO.getCliente();
+        QuartoDto quarto = reservaDTO.getQuarto();
+        LocalDate dataEntrada = reservaDTO.getDataEntrada();
+        LocalDate dataSaida = reservaDTO.getDataSaida();
         dataUtilService.validarData(dataEntrada, dataSaida);
 
         if (!quartoService.quartoDisponivel(quarto)) {
             throw new Exception("Quarto não disponível para as datas selecionadas");
         }
-        return reservaRepository.save(reserva);
+
+        Reserva reserva = reservaRepository.save(mapToEntity(reservaDTO));
+        return mapToDTO(reserva);
     }
 
-    public Reserva modificarReserva(Long reservaId, Reserva reservaAtualizada) throws Exception {
+    public ReservaDto modificarReserva(Long reservaId, ReservaDto reservaAtualizada) throws Exception {
         Reserva reserva = reservaRepository.findById(reservaId)
                 .orElseThrow(() -> new Exception("Reserva não encontrada."));
         dataUtilService.validarData(reserva.getDataEntrada(), reserva.getDataSaida());
+
         reserva.setDataEntrada(reservaAtualizada.getDataEntrada());
         reserva.setDataSaida(reservaAtualizada.getDataSaida());
-        return reservaRepository.save(reserva);
+
+        Reserva updatedReserva = reservaRepository.save(reserva);
+        return mapToDTO(updatedReserva);
     }
 
     public void cancelarReserva(Long reservaId) throws Exception {
@@ -52,13 +59,35 @@ public class  ReservaService {
         reservaRepository.delete(reserva);
     }
 
-    public Reserva consultarReserva(Long reservaId) throws Exception {
-        return reservaRepository.findById(reservaId)
+    public ReservaDto consultarReserva(Long reservaId) throws Exception {
+        Reserva reserva = reservaRepository.findById(reservaId)
                 .orElseThrow(() -> new Exception("Reserva não encontrada."));
+        return mapToDTO(reserva);
     }
 
-    public List<Reserva> listarReservas() {
-        return reservaRepository.findAll();
+    public List<ReservaDto> listarReservas() {
+        List<Reserva> reservas = reservaRepository.findAll();
+        return reservas.stream().map(this::mapToDTO).collect(Collectors.<ReservaDto>toList());
+    }
+
+    private ReservaDto mapToDTO(Reserva reserva) {
+        ReservaDto reservaDTO = new ReservaDto();
+        reservaDTO.setId(reserva.getId());
+        reservaDTO.setCliente(clienteService.mapToDto(reserva.getCliente()));
+        reservaDTO.setQuarto(quartoService.mapToDTO(reserva.getQuarto()));
+        reservaDTO.setDataEntrada(reserva.getDataEntrada());
+        reservaDTO.setDataSaida(reserva.getDataSaida());
+        return reservaDTO;
+    }
+
+    private Reserva mapToEntity(ReservaDto reservaDTO) {
+        Reserva reserva = new Reserva();
+        reserva.setId(reservaDTO.getId());
+        reserva.setCliente(clienteService.mapToEntity(reservaDTO.getCliente()));
+        reserva.setQuarto(quartoService.mapToEntity(reservaDTO.getQuarto()));
+        reserva.setDataEntrada(reservaDTO.getDataEntrada());
+        reserva.setDataSaida(reservaDTO.getDataSaida());
+        return reserva;
     }
 }
 

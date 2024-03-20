@@ -19,26 +19,22 @@ public class ClienteController {
 
 private final ClienteService clienteService;
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<ClienteDto>> findAll() {
-        List<ClienteDto> clientes = clienteService.getAllClientes();
+        List<ClienteDto> clientes = clienteService.buscarTodos();
         return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDto> findById(@PathVariable Long id) {
-        ClienteDto clienteDto = clienteService.getClienteById(id);
-        if (clienteDto != null) {
-            return new ResponseEntity<>(clienteDto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        ClienteDto clienteDto = clienteService.buscarPorId(id);
+       return ResponseEntity.ok().body(clienteDto);
     }
 
     @PostMapping("/criar")
     public ResponseEntity<ClienteDto> create(@RequestBody ClienteDto clienteDto) {
-        ClienteDto createdCliente = clienteService.salvarCliente(clienteDto);
-        return new ResponseEntity<>(createdCliente, HttpStatus.CREATED);
+        ClienteDto created = clienteService.salvar(clienteDto);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -49,7 +45,7 @@ private final ClienteService clienteService;
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        clienteService.deleteCliente(id);
+        clienteService.deletar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

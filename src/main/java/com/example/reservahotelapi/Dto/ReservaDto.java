@@ -6,13 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuartoDto implements Serializable {
+public class ReservaDto implements Serializable {
     private Long id;
-    private int numero;
-    private Boolean estaDisponivel;
+    private ClienteDto cliente;
+    private QuartoDto quarto;
+    private LocalDate dataEntrada;
+    private LocalDate dataSaida;
 }
-

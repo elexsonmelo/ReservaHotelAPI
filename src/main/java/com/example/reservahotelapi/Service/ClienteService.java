@@ -4,75 +4,77 @@ package com.example.reservahotelapi.Service;
 import com.example.reservahotelapi.Dto.CepResultDto;
 import com.example.reservahotelapi.Dto.ClienteDto;
 import com.example.reservahotelapi.Model.Cliente;
+import com.example.reservahotelapi.Model.Endereco;
 import com.example.reservahotelapi.Repository.ClienteRepository;
-import com.example.reservahotelapi.Repository.EnderecoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    private final EnderecoRepository enderecoRepository;
-
-    private boolean validarCep(String cep) {
+    public void validarCep(String cep) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<CepResultDto> resp = restTemplate.getForEntity(
-                String.format("https://viacep.com.br/ws/%s/json/", cep), CepResultDto.class);
-        CepResultDto cepResultDto = resp.getBody();
-        return cepResultDto != null && cepResultDto.getCep() != null;
-    }
-
-    public List<ClienteDto> getAllClientes() {
-        List<Cliente> clientes = clienteRepository.findAll();
-        return clientes.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-    public ClienteDto getClienteById(Long id) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(id);
-        return optionalCliente.map(this::convertToDto).orElse(null);
-    }
-    public ClienteDto salvarCliente(ClienteDto clienteDto) {
-        if (!validarCep(clienteDto.getEndereco().getCep())) {
+        ResponseEntity<Endereco> resp = restTemplate.getForEntity(
+                String.format("https://viacep.com.br/ws/%s/json/", cep), Endereco.class);
+        Endereco endereco = resp.getBody();
+        if (endereco == null || endereco.getCep() == null) {
             throw new IllegalArgumentException("CEP inválido");
         }
-        Cliente cliente = convertToEntity(clienteDto);
-        Cliente clienteSalvo = clienteRepository.save(cliente);
-        return convertToDto(clienteSalvo);
     }
+
+    public List<ClienteDto> buscarTodos() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        return clientes.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    public ClienteDto buscarPorId(Long id) {
+        Optional<Cliente> optionalCliente = clienteRepository.findById(id);
+        return optionalCliente.map(this::mapToDto).orElse(null);
+    }
+
+    public ClienteDto salvar(ClienteDto clienteDto) {
+        Cliente cliente = mapToEntity(clienteDto);
+        Cliente clienteSalvo = clienteRepository.save(cliente);
+        return mapToDto(clienteSalvo);
+    }
+
     public ClienteDto updateCliente(Long id, ClienteDto clienteDTO) {
-        Cliente cliente = convertToEntity(clienteDTO);
+        Cliente cliente = mapToEntity(clienteDTO);
         cliente.setId(id);
         cliente = clienteRepository.save(cliente);
-        return convertToDto(cliente);
+        return mapToDto(cliente);
     }
-    public void deleteCliente(Long id) {
+
+    public void deletar(Long id) {
         clienteRepository.deleteById(id);
     }
 
-    private ClienteDto convertToDto(Cliente cliente) {
+    public ClienteDto mapToDto(Cliente cliente) {
         ClienteDto clienteDTO = new ClienteDto();
         clienteDTO.setId(cliente.getId());
         clienteDTO.setNome(cliente.getNome());
         clienteDTO.setEmail(cliente.getEmail());
+        clienteDTO.setEndereco(cliente.getEndereco());
         return clienteDTO;
     }
-    private Cliente convertToEntity(ClienteDto clienteDTO) {
+
+    public Cliente mapToEntity(ClienteDto clienteDTO) {
         Cliente cliente = new Cliente();
         cliente.setId(clienteDTO.getId());
         cliente.setNome(clienteDTO.getNome());
         cliente.setEmail(clienteDTO.getEmail());
+        cliente.setEndereco(clienteDTO.getEndereco());
         return cliente;
     }
 }
