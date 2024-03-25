@@ -9,7 +9,6 @@
 - Permitir cadastrar um cliente;
 - Permitir criar uma reserva, mediante regras de negócio;
 - Permitir consultar a disponibilidade do quarto, e retornar uma resposta caso o mesmo esteja disponível;
-- Permitir consultar o endereço do cliente, realizando a integração com a API do VIACEP;
 - Utilizaremos o Postman para testar, e inserir dados na aplicação.
 
 # Regras de negócio
