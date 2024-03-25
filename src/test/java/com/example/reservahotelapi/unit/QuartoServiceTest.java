@@ -1,9 +1,9 @@
 package com.example.reservahotelapi.unit;
 
-import com.example.reservahotelapi.Dto.QuartoDto;
-import com.example.reservahotelapi.Model.Quarto;
-import com.example.reservahotelapi.Repository.QuartoRepository;
-import com.example.reservahotelapi.Service.QuartoService;
+import com.example.reservahotelapi.dto.QuartoDto;
+import com.example.reservahotelapi.model.Quarto;
+import com.example.reservahotelapi.repository.QuartoRepository;
+import com.example.reservahotelapi.service.QuartoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,12 +31,12 @@ class QuartoServiceTest {
     @BeforeEach
     public void setUp() {
         quarto = new Quarto();
-        quarto.setQuartoId(1L);
-        quarto.setNumero(Integer.parseInt("101"));
+        quarto.setId(1L);
+        quarto.setNumero("101");
 
         quartoDto = new QuartoDto();
         quartoDto.setId(1L);
-        quartoDto.setNumero(Integer.parseInt("101"));
+        quartoDto.setNumero("101");
     }
 
     @Test
@@ -78,9 +78,29 @@ class QuartoServiceTest {
     }
 
     @Test
-    void testDeletar() {
+    public void testExcluirQuartoExistente() throws Exception {
 
-        assertDoesNotThrow(() -> quartoService.deletar(1L));
+        Long id = 1L;
+        Quarto quarto = new Quarto();
+        when(quartoRepository.findById(id)).thenReturn(Optional.of(quarto));
+
+        quartoService.excluir(id);
+
+        verify(quartoRepository, times(1)).delete(quarto);
+    }
+
+    @Test
+    public void testExcluirQuartoInexistente() {
+
+        Long id = 2L;
+        when(quartoRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            quartoService.excluir(id);
+        });
+
+        assertEquals("Quarto não encontrado.", exception.getMessage());
+        verify(quartoRepository, never()).delete(any());
     }
 
     @Test
@@ -95,24 +115,6 @@ class QuartoServiceTest {
         assertEquals(quartoDto.getNumero(), updatedQuartoDto.getNumero());
     }
 
-    @Test
-    void testQuartoDisponivel_ValidDto() {
-
-        QuartoDto quartoDto = new QuartoDto();
-        quartoDto.setEstaDisponivel(true);
-
-        assertDoesNotThrow(() -> quartoService.quartoDisponivel(quartoDto));
-    }
-
-    @Test
-    void testQuartoDisponivel_InvalidDto() {
-
-        QuartoDto quartoDto = new QuartoDto();
-        quartoDto.setEstaDisponivel(false);
-
-        Exception exception = assertThrows(Exception.class, () -> quartoService.quartoDisponivel(quartoDto));
-        assertEquals("Quarto selecionado não está disponível!", exception.getMessage());
-    }
 
     @Test
     void testMapToDTO() {
@@ -120,7 +122,7 @@ class QuartoServiceTest {
         QuartoDto mappedDto = quartoService.mapToDTO(quarto);
 
         assertNotNull(mappedDto);
-        assertEquals(quarto.getQuartoId(), mappedDto.getId());
+        assertEquals(quarto.getId(), mappedDto.getId());
         assertEquals(quarto.getNumero(), mappedDto.getNumero());
     }
 
@@ -130,7 +132,7 @@ class QuartoServiceTest {
         Quarto mappedQuarto = quartoService.mapToEntity(quartoDto);
 
         assertNotNull(mappedQuarto);
-        assertEquals(quartoDto.getId(), mappedQuarto.getQuartoId());
+        assertEquals(quartoDto.getId(), mappedQuarto.getId());
         assertEquals(quartoDto.getNumero(), mappedQuarto.getNumero());
     }
 }

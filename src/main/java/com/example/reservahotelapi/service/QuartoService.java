@@ -1,10 +1,11 @@
-package com.example.reservahotelapi.Service;
+package com.example.reservahotelapi.service;
 
-import com.example.reservahotelapi.Dto.QuartoDto;
-import com.example.reservahotelapi.Model.Quarto;
-import com.example.reservahotelapi.Repository.QuartoRepository;
+import com.example.reservahotelapi.dto.QuartoDto;
+import com.example.reservahotelapi.model.Quarto;
+import com.example.reservahotelapi.repository.QuartoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,55 +15,50 @@ import java.util.stream.Collectors;
 public class QuartoService {
 
     private final QuartoRepository quartoRepository;
-
+    @Transactional
     public QuartoDto salvar(QuartoDto quartoDto) {
         Quarto quarto = mapToEntity(quartoDto);
         quarto = quartoRepository.save(quarto);
         return mapToDTO(quarto);
     }
-
+    @Transactional(readOnly = true)
     public QuartoDto buscarPorId(Long id) {
         Quarto quarto = quartoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Quarto não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Quarto não encontrado."));
         return mapToDTO(quarto);
     }
-
+    @Transactional(readOnly = true)
     public List<QuartoDto> buscarTodos() {
         List<Quarto> quartos = quartoRepository.findAll();
         return quartos.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
-    public void deletar(Long id) {
-        quartoRepository.deleteById(id);
-    }
-
+    @Transactional
     public QuartoDto atualizar(Long id, QuartoDto quartoDto) {
         Quarto quarto = mapToEntity(quartoDto);
-        quarto.setQuartoId(id);
+        quarto.setId(id);
         quarto = quartoRepository.save(quarto);
         return mapToDTO(quarto);
     }
-
-    public boolean quartoDisponivel(QuartoDto quarto) throws Exception {
-        if (quarto != null && !quarto.getEstaDisponivel()) {
-            throw new Exception("Quarto selecionado não está disponível!");
-        }
-        return true;
+    public void excluir(Long id) throws Exception {
+        Quarto quarto = quartoRepository.findById(id)
+                .orElseThrow(() -> new Exception("Quarto não encontrado."));
+        quartoRepository.delete(quarto);
     }
+
+
 
     public QuartoDto mapToDTO(Quarto quarto) {
         QuartoDto quartoDTO = new QuartoDto();
-        quartoDTO.setId(quarto.getQuartoId());
+        quartoDTO.setId(quarto.getId());
         quartoDTO.setNumero(quarto.getNumero());
-        quartoDTO.setEstaDisponivel(quarto.getEstaDisponivel());
         return quartoDTO;
     }
 
     public Quarto mapToEntity(QuartoDto quartoDto) {
         Quarto quarto = new Quarto();
-        quarto.setQuartoId(quartoDto.getId());
+        quarto.setId(quartoDto.getId());
         quarto.setNumero(quartoDto.getNumero());
-        quarto.setEstaDisponivel(quartoDto.getEstaDisponivel());
         return quarto;
     }
 }

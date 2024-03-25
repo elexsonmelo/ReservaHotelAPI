@@ -1,9 +1,10 @@
-package com.example.reservahotelapi.Controller;
+package com.example.reservahotelapi.controller;
 
-import com.example.reservahotelapi.Dto.ReservaDto;
-import com.example.reservahotelapi.Model.Reserva;
-import com.example.reservahotelapi.Service.ReservaService;
+import com.example.reservahotelapi.dto.QuartoDto;
+import com.example.reservahotelapi.dto.ReservaDto;
+import com.example.reservahotelapi.service.ReservaService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +18,15 @@ public class ReservaController {
     private final ReservaService reservaService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> findById(@PathVariable("id") Long reservaId) {
-        try {
-            ReservaDto reserva = reservaService.consultarReserva(reservaId);
-            return ResponseEntity.ok(reserva.toString());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<ReservaDto> findById(@PathVariable Long id) throws Exception {
+        ReservaDto reserva = reservaService.consultarReserva(id);
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<String> findAll() {
+    public ResponseEntity<List<ReservaDto>> findAll() {
         List<ReservaDto> reservas = reservaService.listarReservas();
-        return ResponseEntity.ok(reservas.toString());
+        return new ResponseEntity<>(reservas, HttpStatus.OK);
     }
     @PostMapping("/criar")
     public ResponseEntity<String> create(@RequestBody ReservaDto reservaDto) {
@@ -42,19 +39,18 @@ public class ReservaController {
     }
 
     @PutMapping("/modificar/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") Long reservaId, @RequestBody ReservaDto reservaAtualizada) {
+    public ResponseEntity<ReservaDto> atualizarReserva(@PathVariable Long id, @RequestBody ReservaDto reservaDto) {
         try {
-            ReservaDto reservaDto = reservaService.modificarReserva(reservaId, reservaAtualizada);
-            return ResponseEntity.ok(reservaDto.toString());
+            ReservaDto reservaAtualizada = reservaService.atualizarReserva(id, reservaDto);
+            return ResponseEntity.ok(reservaAtualizada);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
-
     @DeleteMapping("/cancelar/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long reservaId) {
         try {
-            reservaService.cancelarReserva(reservaId);
+            reservaService.exluirReserva(reservaId);
             return ResponseEntity.ok("Reserva cancelada com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

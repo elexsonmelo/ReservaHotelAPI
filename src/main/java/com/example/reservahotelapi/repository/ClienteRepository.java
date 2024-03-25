@@ -1,6 +1,6 @@
-package com.example.reservahotelapi.Repository;
+package com.example.reservahotelapi.repository;
 
-import com.example.reservahotelapi.Model.Cliente;
+import com.example.reservahotelapi.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

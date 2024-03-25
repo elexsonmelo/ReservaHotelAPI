@@ -1,6 +1,6 @@
-package com.example.reservahotelapi.Dto;
+package com.example.reservahotelapi.dto;
 
-import com.example.reservahotelapi.Model.Endereco;
+import com.example.reservahotelapi.model.Endereco;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +17,4 @@ public class ClienteDto implements Serializable {
     private String nome;
     private String email;
     private String cep;
-    private Endereco endereco;
 }

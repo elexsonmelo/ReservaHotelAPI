@@ -1,13 +1,10 @@
-package com.example.reservahotelapi.Model;
+package com.example.reservahotelapi.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
-import java.util.UUID;
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "cliente")
 public class Cliente implements Serializable {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +22,9 @@ public class Cliente implements Serializable {
     private String cpf;
     @Column
     private String email;
-    @JoinColumn(name = "endereco_cliente")
+    @Column
+    private String cep;
+    @JoinColumn
     @ManyToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 }

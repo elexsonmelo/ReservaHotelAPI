@@ -1,4 +1,4 @@
-package com.example.reservahotelapi.Service;
+package com.example.reservahotelapi.service;
 
 
 import lombok.RequiredArgsConstructor;

@@ -1,23 +1,20 @@
-package com.example.reservahotelapi.Controller;
+package com.example.reservahotelapi.controller;
 
-import com.example.reservahotelapi.Dto.QuartoDto;
-import com.example.reservahotelapi.Model.Quarto;
-import com.example.reservahotelapi.Service.QuartoService;
+import com.example.reservahotelapi.dto.QuartoDto;
+import com.example.reservahotelapi.service.QuartoService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/quartos")
 public class QuartoController {
 
     private final QuartoService quartoService;
-    public QuartoController(QuartoService quartoService) {
-        this.quartoService = quartoService;
-    }
 
     @PostMapping("/criar")
     public ResponseEntity<QuartoDto> create(@RequestBody QuartoDto quartoDto) {
@@ -43,8 +40,8 @@ public class QuartoController {
     }
 
     @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        quartoService.deletar(id);
-        return ResponseEntity.ok().body("Excluído com sucesso.");
+    public ResponseEntity<Void > delete(@PathVariable Long id) throws Exception {
+        quartoService.excluir(id);
+        return ResponseEntity.ok().build();
     }
 }

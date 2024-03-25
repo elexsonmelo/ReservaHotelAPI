@@ -1,15 +1,11 @@
-package com.example.reservahotelapi.Model;
+package com.example.reservahotelapi.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -17,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table (name = "reserva")
 public class Reserva implements Serializable {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,11 +25,11 @@ public class Reserva implements Serializable {
     private LocalDate dataSaida;
     @Column(nullable = false)
     private int duracaoEmDias;
-    @JoinColumn(name = "cliente_id")
-    @ManyToOne
-    private Cliente cliente;
-    @JoinColumn(name = "quarto_id")
+    @JoinColumn
     @ManyToOne(cascade = CascadeType.ALL)
+    private Cliente cliente;
+    @JoinColumn
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Quarto quarto;
 }
 

@@ -1,26 +1,24 @@
-package com.example.reservahotelapi.Model;
+package com.example.reservahotelapi.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
-import java.util.UUID;
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
-@Table(name ="endereco_cliente")
+@Table(name ="endereco")
 public class Endereco implements Serializable {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long enderecoId;
     @Column
     private String numero;
-    @Column
+    @Column(nullable = false)
     private String cep;
     @Column
     private String cidade;

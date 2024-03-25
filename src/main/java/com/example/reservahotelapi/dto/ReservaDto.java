@@ -1,5 +1,6 @@
-package com.example.reservahotelapi.Dto;
+package com.example.reservahotelapi.dto;
 
+import com.example.reservahotelapi.model.Endereco;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 public class ReservaDto implements Serializable {
     private Long id;
     private ClienteDto cliente;
-    private QuartoDto quarto;
+    private Long quartoId;
     private LocalDate dataEntrada;
     private LocalDate dataSaida;
 }

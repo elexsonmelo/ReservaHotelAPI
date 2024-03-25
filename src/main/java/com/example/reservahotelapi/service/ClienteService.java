@@ -1,62 +1,63 @@
-package com.example.reservahotelapi.Service;
+package com.example.reservahotelapi.service;
 
 
-import com.example.reservahotelapi.Dto.CepResultDto;
-import com.example.reservahotelapi.Dto.ClienteDto;
-import com.example.reservahotelapi.Model.Cliente;
-import com.example.reservahotelapi.Model.Endereco;
-import com.example.reservahotelapi.Repository.ClienteRepository;
+import com.example.reservahotelapi.dto.CepResultDto;
+import com.example.reservahotelapi.dto.ClienteDto;
+import com.example.reservahotelapi.model.Cliente;
+import com.example.reservahotelapi.model.Endereco;
+import com.example.reservahotelapi.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-@Service
 @RequiredArgsConstructor
+@Service
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    public void validarCep(String cep) {
+    private  CepResultDto cepResultDto;
+
+    public boolean consultaCep(String cep) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Endereco> resp = restTemplate.getForEntity(
-                String.format("https://viacep.com.br/ws/%s/json/", cep), Endereco.class);
-        Endereco endereco = resp.getBody();
-        if (endereco == null || endereco.getCep() == null) {
-            throw new IllegalArgumentException("CEP inválido");
-        }
+        ResponseEntity<CepResultDto> resp = restTemplate.getForEntity(
+                String.format("https://viacep.com.br/ws/%s/json/", cep), CepResultDto.class);
+        CepResultDto cepResultDto = resp.getBody();
+        return cepResultDto != null && cepResultDto.getCep() != null;
     }
 
+    @Transactional(readOnly = true)
     public List<ClienteDto> buscarTodos() {
         List<Cliente> clientes = clienteRepository.findAll();
         return clientes.stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
-
+    @Transactional(readOnly = true)
     public ClienteDto buscarPorId(Long id) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(id);
         return optionalCliente.map(this::mapToDto).orElse(null);
     }
-
+    @Transactional
     public ClienteDto salvar(ClienteDto clienteDto) {
         Cliente cliente = mapToEntity(clienteDto);
         Cliente clienteSalvo = clienteRepository.save(cliente);
         return mapToDto(clienteSalvo);
     }
-
-    public ClienteDto updateCliente(Long id, ClienteDto clienteDTO) {
+    @Transactional
+    public ClienteDto atualizar(Long id, ClienteDto clienteDTO) {
         Cliente cliente = mapToEntity(clienteDTO);
         cliente.setId(id);
         cliente = clienteRepository.save(cliente);
         return mapToDto(cliente);
     }
 
-    public void deletar(Long id) {
+    public void excluir(Long id) {
         clienteRepository.deleteById(id);
     }
 
@@ -65,7 +66,7 @@ public class ClienteService {
         clienteDTO.setId(cliente.getId());
         clienteDTO.setNome(cliente.getNome());
         clienteDTO.setEmail(cliente.getEmail());
-        clienteDTO.setEndereco(cliente.getEndereco());
+        clienteDTO.setCep(cliente.getCep());
         return clienteDTO;
     }
 
@@ -74,7 +75,7 @@ public class ClienteService {
         cliente.setId(clienteDTO.getId());
         cliente.setNome(clienteDTO.getNome());
         cliente.setEmail(clienteDTO.getEmail());
-        cliente.setEndereco(clienteDTO.getEndereco());
+
         return cliente;
     }
 }

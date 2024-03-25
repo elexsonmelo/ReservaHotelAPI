@@ -1,14 +1,14 @@
 package com.example.reservahotelapi.unit;
 
-import com.example.reservahotelapi.Dto.ClienteDto;
-import com.example.reservahotelapi.Dto.QuartoDto;
-import com.example.reservahotelapi.Dto.ReservaDto;
-import com.example.reservahotelapi.Model.Reserva;
-import com.example.reservahotelapi.Repository.ReservaRepository;
-import com.example.reservahotelapi.Service.ClienteService;
-import com.example.reservahotelapi.Service.DataUtilService;
-import com.example.reservahotelapi.Service.QuartoService;
-import com.example.reservahotelapi.Service.ReservaService;
+import com.example.reservahotelapi.dto.ClienteDto;
+import com.example.reservahotelapi.dto.QuartoDto;
+import com.example.reservahotelapi.dto.ReservaDto;
+import com.example.reservahotelapi.model.Reserva;
+import com.example.reservahotelapi.repository.ReservaRepository;
+import com.example.reservahotelapi.service.ClienteService;
+import com.example.reservahotelapi.service.DataUtilService;
+import com.example.reservahotelapi.service.QuartoService;
+import com.example.reservahotelapi.service.ReservaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -43,6 +43,9 @@ class ReservaServiceTest {
     @InjectMocks
     private ReservaService reservaService;
 
+    ReservaServiceTest() {
+    }
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -55,17 +58,15 @@ class ReservaServiceTest {
         ClienteDto clienteDto = new ClienteDto();
         QuartoDto quartoDto = new QuartoDto();
         reservaDto.setCliente(clienteDto);
-        reservaDto.setQuarto(quartoDto);
+        reservaDto.setId(quartoDto.getId());
         reservaDto.setDataEntrada(LocalDate.now());
         reservaDto.setDataSaida(LocalDate.now().plusDays(2));
-        when(quartoService.quartoDisponivel(quartoDto)).thenReturn(true);
         when(reservaRepository.save(any())).thenReturn(new Reserva());
 
         ReservaDto result = reservaService.fazerReserva(reservaDto);
 
         assertNotNull(result);
         verify(dataUtilService).validarData(reservaDto.getDataEntrada(), reservaDto.getDataSaida());
-        verify(quartoService).quartoDisponivel(quartoDto);
         verify(reservaRepository).save(any());
     }
 
@@ -82,7 +83,7 @@ class ReservaServiceTest {
         when(reservaRepository.findById(reservaId)).thenReturn(Optional.of(reserva));
         when(reservaRepository.save(any())).thenReturn(new Reserva());
 
-        ReservaDto result = reservaService.modificarReserva(reservaId, reservaAtualizada);
+        ReservaDto result = reservaService.atualizarReserva(reservaId, reservaAtualizada);
 
         assertNotNull(result);
         verify(dataUtilService).validarData(reserva.getDataEntrada(), reserva.getDataSaida());
@@ -96,7 +97,7 @@ class ReservaServiceTest {
         Reserva reserva = new Reserva();
         when(reservaRepository.findById(reservaId)).thenReturn(Optional.of(reserva));
 
-        reservaService.cancelarReserva(reservaId);
+        reservaService.exluirReserva(reservaId);
 
         verify(reservaRepository).findById(reservaId);
         verify(reservaRepository).delete(reserva);

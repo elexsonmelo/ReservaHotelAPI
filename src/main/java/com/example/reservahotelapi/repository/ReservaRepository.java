@@ -1,11 +1,9 @@
-package com.example.reservahotelapi.Repository;
+package com.example.reservahotelapi.repository;
 
-import com.example.reservahotelapi.Model.Reserva;
+import com.example.reservahotelapi.model.Reserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.List;
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 }

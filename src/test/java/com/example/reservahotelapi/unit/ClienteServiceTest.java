@@ -1,25 +1,23 @@
 package com.example.reservahotelapi.unit;
 
-import com.example.reservahotelapi.Dto.CepResultDto;
-import com.example.reservahotelapi.Dto.ClienteDto;
-import com.example.reservahotelapi.Model.Cliente;
-import com.example.reservahotelapi.Repository.ClienteRepository;
-import com.example.reservahotelapi.Service.ClienteService;
+
+import com.example.reservahotelapi.dto.ClienteDto;
+import com.example.reservahotelapi.model.Cliente;
+import com.example.reservahotelapi.repository.ClienteRepository;
+import com.example.reservahotelapi.service.ClienteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,9 +25,6 @@ class ClienteServiceTest {
 
     @Mock
     private ClienteRepository clienteRepository;
-
-    @Mock
-    private RestTemplate restTemplate;
 
     @InjectMocks
     private ClienteService clienteService;
@@ -84,7 +79,7 @@ class ClienteServiceTest {
 
     @Test
     void testSalvarCliente() {
-        
+
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
 
         ClienteDto result = clienteService.salvar(clienteDto);
@@ -101,7 +96,7 @@ class ClienteServiceTest {
     void testUpdateCliente() {
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
 
-        ClienteDto result = clienteService.updateCliente(1L, clienteDto);
+        ClienteDto result = clienteService.atualizar(1L, clienteDto);
 
         assertNotNull(result);
         assertEquals(cliente.getId(), result.getId());
@@ -113,17 +108,10 @@ class ClienteServiceTest {
 
     @Test
     void testDeleteCliente() {
-        clienteService.deletar(1L);
+
+        clienteService.excluir(1L);
 
         verify(clienteRepository, times(1)).deleteById(1L);
-    }
-
-    @Test
-    void testValidarCep_InvalidCep() {
-        when(restTemplate.getForEntity(anyString(), eq(CepResultDto.class)))
-                .thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
-
-        assertThrows(IllegalArgumentException.class, () -> clienteService.validarCep(clienteDto.getCep()));
     }
 }
 

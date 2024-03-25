@@ -1,6 +1,6 @@
-package com.example.reservahotelapi.Repository;
+package com.example.reservahotelapi.repository;
 
-import com.example.reservahotelapi.Model.Endereco;
+import com.example.reservahotelapi.model.Endereco;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

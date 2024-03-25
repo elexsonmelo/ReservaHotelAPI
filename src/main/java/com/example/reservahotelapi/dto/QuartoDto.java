@@ -1,4 +1,4 @@
-package com.example.reservahotelapi.Dto;
+package com.example.reservahotelapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,6 @@ import java.io.Serializable;
 @Setter
 public class QuartoDto implements Serializable {
     private Long id;
-    private int numero;
-    private Boolean estaDisponivel;
+    private String numero;
 }
 
