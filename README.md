@@ -14,7 +14,6 @@
 # Regras de negócio
 - A API será mantida pelo departamento de TI do hotel;
 - Para efeitos do TESTE, assumimos que o hotel tem apenas um quarto disponível;
-- Fazer integração com VIACEP para consulta de endereço quando for digitado CEP;
 - Para dar oportunidade a todos de reservar o quarto, a estadia não pode ser superior a 3 dias e não pode ser reservada com mais de 30 dias de antecedência;
 - A data de início da estadia tem que ser no minimo com UM dia de antencedencia do dia da reserva;
 - Para simplificar o caso de uso, um “DIA” no quarto do hotel começa das 00h00 às 23h59:59;
